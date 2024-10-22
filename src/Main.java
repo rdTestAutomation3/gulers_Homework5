@@ -1,15 +1,72 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // Kullanıcıdan veri almak için Scanner kullanıyoruz
+        Scanner scanner = new Scanner(System.in);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        // Kullanıcıdan personelin isim, günlük ücret ve çalıştığı gün sayısı bilgilerini alıyoruz
+        System.out.print("Personelin adını giriniz: ");
+        String isim = scanner.nextLine();
+
+        System.out.print("Personelin günlük ücretini giriniz: ");
+        double gunlukUcret = scanner.nextDouble();
+
+        System.out.print("Personelin çalıştığı gün sayısını giriniz: ");
+        int calistigiGun = scanner.nextInt();
+
+        // Bir personel nesnesi oluşturuyoruz
+        Personel personel = new Personel(isim, gunlukUcret, calistigiGun);
+
+        // Muhasebe üzerinden maaş hesaplıyoruz
+        double maas = Muhasebe.maasHesapla(personel);
+
+        // Sonuçları ekrana yazdırıyoruz
+        System.out.println(personel.getIsim() + " isimli personel için hesaplanan maaş: " + maas + " TL" +"'dir.");
+
+        // Scanner'ı kapatıyoruz
+        scanner.close();
+    }
+}
+
+class Personel {
+    private String isim;
+    private double gunlukUcret;
+    private int calistigiGun;
+
+    public Personel(String isim, double gunlukUcret, int calistigiGun) {
+        this.isim = isim;
+        this.gunlukUcret = gunlukUcret;
+        this.calistigiGun = calistigiGun;
+    }
+
+    public int getCalistigiGun() {
+        return calistigiGun;
+    }
+
+    public double getGunlukUcret() {
+        return gunlukUcret;
+    }
+
+    public String getIsim() {
+        return isim;
+    }
+}
+
+class Muhasebe {
+
+    public static double maasHesapla(Personel personel) {
+
+
+        double gunlukUcret = personel.getGunlukUcret();
+        int calistigiGun = personel.getCalistigiGun();
+
+        // Prim hesaplama işlemi (25'ten fazla gün çalıştıysa her gün için 1000 TL prim eklenir) Üçlü operatör kullanımı
+        double prim = (calistigiGun > 25) ? (calistigiGun - 25) * 1000 : 0;
+
+        // Toplam maaş hesaplaması
+        double toplamMaas = calistigiGun * gunlukUcret + prim;
+        return toplamMaas;
+//test
     }
 }
